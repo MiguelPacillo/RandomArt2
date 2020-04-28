@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Test</title>
+
+    <style>
+        body {
+            background-color: black;
+        }
+
+        .canvas-container {
+            text-align: center;
+            margin: auto;
+            padding-top: 20px;
+        }
+
+        canvas {
+            border-radius: 25px;
+        }
+
+        .button-container {
+            text-align: center;
+            padding-top: 30px;
+        }
+
+        button {
+            height: 30px;
+            width: 100px;
+            border-radius: 25px;
+            background-color: darkblue;
+            color: rgba(255, 255, 255, 0.541);
+            font-family: Arial, Helvetica, sans-serif;
+            border: 0;
+            cursor: pointer;
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        button:active {
+            background-color: rgb(0, 0, 88);
+        }
+    </style>
+
+<script>
+    function draw() {
+        var canvas = document.getElementById("test");
+
+        var c = canvas.getContext("2d");
+        var shapeNum = Math.ceil(Math.random()*10); // Sets a random number of shapes from 1-10
+        
+        characters = ["a", "b", "c", "d", "e", "f", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]; // Characters for hexadecimal generator
+
+        c.clearRect(0, 0, canvas.width, canvas.height); // Clears the canvas after each button press
+
+        for (let i = 0; i < shapeNum; i++) { // Generates number of shapes according to shapeNum
+
+            var sides = Math.ceil(Math.random()*10); // Random number of sides from 1-10 (less sides for more interesting shapes)
+            var penStartX = Math.ceil(Math.random()*800);
+            var penStartY = Math.ceil(Math.random()*800); 
+
+            // Starts pen at a random point inside canvas for each shape generated
+
+            c.globalAlpha = Math.random(); // Generates a random alpha value for each new shape
+            c.beginPath();
+            c.moveTo(penStartX, penStartY);
+            var chance = Math.round(Math.random()); // Decides whether shape will use lines or curves
+
+            if (chance == 0) {
+                
+                for (let j = 0; j < sides; j++) {
+                    c.quadraticCurveTo(Math.random()*800, Math.random()*800, Math.random()*800, Math.random()*800);
+                }
+                
+                c.quadraticCurveTo(Math.random()*800, Math.random()*800, penStartX, penStartY);
+            } else {
+                
+                for (let j = 0; j < sides; j++) {
+                    c.lineTo(Math.random()*800, Math.random()*800);
+                }
+                
+                c.lineTo(penStartX, penStartY)
+
+            }
+            var randColor = "#";
+
+            for (let k = 0; k < 6; k++) { // Hexadecimal generator for random colors
+
+                randColor += characters[Math.floor(Math.random() * characters.length)];
+            
+        }
+
+            c.closePath();
+            c.fillStyle = randColor;
+            c.fill();
+        }
+        
+    }
+
+</script>
+</head>
+<body>
+
+    <div class="canvas-container">
+        <canvas id="test" width="800" height="800" style="border: solid 3px darkblue"></canvas>
+    </div>
+
+    <div class="button-container">
+        <button onclick="draw()">Generate</button>
+    </div>
+</body>
+</html>
